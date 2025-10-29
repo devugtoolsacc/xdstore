@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
               name,
               email: email.email_address,
               imageUrl: evt.data.image_url,
-              role: 'user',
+              role: evt.data.public_metadata.role,
             }
           );
           return new Response(`User updated ${evt.data.id}`, { status: 200 });

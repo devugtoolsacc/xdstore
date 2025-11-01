@@ -40,7 +40,6 @@ export async function getUser(userId: string) {
   'use cache';
   unstable_cacheTag(getUserTag('users', userId));
 
-  console.log('called getUser');
   return db.query.UserTable.findFirst({
     where: eq(UserTable.id, userId),
   });

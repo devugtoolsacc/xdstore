@@ -1,12 +1,13 @@
-import type { Metadata } from 'next';
+'use client';
+// import type { Metadata } from 'next';
 import './globals.css';
-import { ClerkProvider } from '@clerk/nextjs';
 import { Toaster } from '@/components/ui/sonner';
+import ConvexClientProvider from './providers/ContextClientProvider';
 
-export const metadata: Metadata = {
-  title: 'XD Store',
-  description: 'XD Store',
-};
+// export const metadata: Metadata = {
+//   title: 'XD Store',
+//   description: 'XD Store',
+// };
 
 export default function RootLayout({
   children,
@@ -14,13 +15,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className="antialiased">
+    <html lang="en">
+      <body className="antialiased">
+        <ConvexClientProvider>
           <main>{children}</main>
-          <Toaster />
-        </body>
-      </html>
-    </ClerkProvider>
+        </ConvexClientProvider>
+        <Toaster />
+      </body>
+    </html>
   );
 }

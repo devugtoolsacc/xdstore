@@ -1,4 +1,4 @@
-export default async function Home() {
+export default function Home() {
   return (
     <div className="container my-6 mx-auto">
       <h1 className="text-2xl font-bold">Welcome to XD Store</h1>

@@ -1,8 +1,16 @@
+'use client';
 import { Button } from '@/components/ui/button';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from '@clerk/clerk-react';
 import Link from 'next/link';
-import { getCurrentUser } from '../services/clerk';
+// import AdminLink from './Admin';
+import { useCurrentUser } from '../services/useCurrentUser';
 import { canAccessAdminPages } from '../permissions/general';
+// import { canAccessAdminPages } from '../permissions/general';
 
 export default function ConsumerLayout({
   children,
@@ -56,10 +64,10 @@ function Navbar() {
   );
 }
 
-async function AdminLink() {
-  const user = await getCurrentUser();
+function AdminLink() {
+  const { user } = useCurrentUser();
 
-  if (!canAccessAdminPages(user)) return null;
+  if (!user || !canAccessAdminPages(user)) return null;
   return (
     <Link href="/admin" className="hover:bg-accent/10 flex items-center px-2">
       Admin

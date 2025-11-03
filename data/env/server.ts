@@ -7,11 +7,13 @@ export const env = createEnv({
     CLERK_WEBHOOK_SIGNING_SECRET: z.string().min(1),
     TEST_IP_ADDRESS: z.string().min(1).optional(),
     CLERK_JWT_ISSUER_DOMAIN: z.string().min(1),
+    CONVEX_DEPLOYMENT: z.string().min(1),
   },
   runtimeEnv: {
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     CLERK_WEBHOOK_SIGNING_SECRET: process.env.CLERK_WEBHOOK_SIGNING_SECRET,
     TEST_IP_ADDRESS: process.env.TEST_IP_ADDRESS,
     CLERK_JWT_ISSUER_DOMAIN: process.env.CLERK_JWT_ISSUER_DOMAIN,
+    CONVEX_DEPLOYMENT: process.env.CONVEX_DEPLOYMENT,
   },
 });

@@ -7,10 +7,8 @@ import {
   UserButton,
 } from '@clerk/clerk-react';
 import Link from 'next/link';
-// import AdminLink from './Admin';
 import { useCurrentUser } from '../services/useCurrentUser';
 import { canAccessAdminPages } from '../permissions/general';
-// import { canAccessAdminPages } from '../permissions/general';
 
 export default function ConsumerLayout({
   children,

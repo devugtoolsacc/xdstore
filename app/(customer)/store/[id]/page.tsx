@@ -1,16 +1,34 @@
+import { preloadedQueryResult, preloadQuery } from 'convex/nextjs';
+import { api } from '@/convex/_generated/api';
+import { Id } from '@/convex/_generated/dataModel';
+import { Suspense } from 'react';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
+import StoreView from '@/features/users/schemas/customer/stores/store/components/StoreView';
+import { notFound } from 'next/navigation';
+
 export default async function StorePage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: Id<'stores'> }>;
 }) {
   const { id } = await params;
+  const preloadedStore = await preloadQuery(api.stores.get, { storeId: id });
+  const preloadedItems = await preloadQuery(api.stores.getItems, {
+    storeId: id,
+  });
+  const store = preloadedQueryResult(preloadedStore);
+  const items = preloadedQueryResult(preloadedItems);
+
+  if (!store || !items) {
+    notFound();
+  }
+
   return (
-    <div className="space-y-12">
-      <div className="text-center space-y-6">
-        <h1 className="text-6xl font-bold text-gray-900">
-          xd<span className="text-primary">store</span>
-        </h1>
-      </div>
-    </div>
+    <Suspense fallback={<LoadingSpinner />}>
+      <StoreView
+        preloadedStore={preloadedStore}
+        preloadedItems={preloadedItems}
+      />
+    </Suspense>
   );
 }

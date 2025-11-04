@@ -1,36 +1,36 @@
-import { query, mutation } from "./_generated/server";
-import { v } from "convex/values";
+import { query, mutation } from './_generated/server';
+import { v } from 'convex/values';
 
 export const list = query({
   args: {},
   handler: async (ctx) => {
     return await ctx.db
-      .query("stores")
-      .filter((q) => q.eq(q.field("isActive"), true))
+      .query('stores')
+      .filter((q) => q.eq(q.field('isActive'), true))
       .collect();
   },
 });
 
 export const get = query({
-  args: { storeId: v.id("stores") },
+  args: { storeId: v.id('stores') },
   handler: async (ctx, args) => {
     return await ctx.db.get(args.storeId);
   },
 });
 
 export const getItems = query({
-  args: { storeId: v.id("stores") },
+  args: { storeId: v.id('stores') },
   handler: async (ctx, args) => {
     return await ctx.db
-      .query("items")
-      .withIndex("by_store", (q) => q.eq("storeId", args.storeId))
+      .query('items')
+      .withIndex('by_store', (q) => q.eq('storeId', args.storeId))
       .collect();
   },
 });
 
 export const toggleItemAvailability = mutation({
-  args: { 
-    itemId: v.id("items"),
+  args: {
+    itemId: v.id('items'),
     isAvailable: v.boolean(),
   },
   handler: async (ctx, args) => {
@@ -42,7 +42,7 @@ export const toggleItemAvailability = mutation({
 
 export const createItem = mutation({
   args: {
-    storeId: v.id("stores"),
+    storeId: v.id('stores'),
     name: v.string(),
     description: v.string(),
     price: v.number(),
@@ -50,7 +50,7 @@ export const createItem = mutation({
     category: v.string(),
   },
   handler: async (ctx, args) => {
-    return await ctx.db.insert("items", {
+    return await ctx.db.insert('items', {
       ...args,
       isAvailable: true,
     });
@@ -59,7 +59,7 @@ export const createItem = mutation({
 
 export const updateItem = mutation({
   args: {
-    itemId: v.id("items"),
+    itemId: v.id('items'),
     name: v.string(),
     description: v.string(),
     price: v.number(),
@@ -73,7 +73,7 @@ export const updateItem = mutation({
 });
 
 export const deleteItem = mutation({
-  args: { itemId: v.id("items") },
+  args: { itemId: v.id('items') },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.itemId);
   },

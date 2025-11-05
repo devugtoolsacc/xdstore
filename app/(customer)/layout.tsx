@@ -9,6 +9,8 @@ import {
 import Link from 'next/link';
 import { useCurrentUser } from '../services/useCurrentUser';
 import { canAccessAdminPages } from '../permissions/general';
+import CartButton from '@/features/users/schemas/customer/cart/components/CartButton';
+import CartProvider from '../providers/CartProvider';
 
 export default function ConsumerLayout({
   children,
@@ -16,38 +18,34 @@ export default function ConsumerLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <CartProvider>
       <Navbar />
       <main className="max-w-7xl mx-auto px-4 py-8">{children}</main>
-    </>
+    </CartProvider>
   );
 }
 
 function Navbar() {
   return (
-    <header className="flex h-12 shadow bg-background z-10 justify-center">
-      <nav className="flex gap-4 container">
+    <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
+      <nav className="max-w-7xl mx-auto px-4 h-16 flex items-center gap-4">
         <Link
           href="/"
-          className="mr-auto text-lg hover:underline px-2 flex items-center"
+          className="text-2xl font-bold text-primary hover:text-primary-hover transition-colors mr-auto"
         >
-          XD Store
+          xdstore
         </Link>
 
         <SignedIn>
           <AdminLink />
-          <Link
-            href="/products"
-            className="hover:bg-accent/10 flex items-center px-2"
-          >
-            My Products
-          </Link>
+
           <Link
             href="/purchases"
             className="hover:bg-accent/10 flex items-center px-2"
           >
             Purchase History
           </Link>
+          <CartButton />
           <div className="self-center p-0">
             <UserButton />
           </div>

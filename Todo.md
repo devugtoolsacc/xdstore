@@ -1,4 +1,4 @@
-[] setup auth
-[] setup db (drizzle)
-[] setup customer
+[x] setup auth
+[x] setup customer
+[] finish cart
 [] setup admin

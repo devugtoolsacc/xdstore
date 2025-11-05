@@ -2,12 +2,20 @@ import { query, mutation } from './_generated/server';
 import { v } from 'convex/values';
 
 export const list = query({
-  args: {},
-  handler: async (ctx) => {
-    return await ctx.db
+  args: {
+    storeIds: v.optional(v.array(v.id('stores'))),
+  },
+  handler: async (ctx, args) => {
+    const stores = await ctx.db
       .query('stores')
       .filter((q) => q.eq(q.field('isActive'), true))
       .collect();
+
+    if (args.storeIds) {
+      return stores.filter((store) => args.storeIds!.includes(store._id));
+    }
+
+    return stores;
   },
 });
 

@@ -2,7 +2,7 @@
 // import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
-import ConvexClientProvider from './providers/ContextClientProvider';
+import ConvexClientProvider from './providers/ConvexClientProvider';
 
 // export const metadata: Metadata = {
 //   title: 'XD Store',

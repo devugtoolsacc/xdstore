@@ -41,7 +41,7 @@ export default function StoresList(props: {
               </h3>
             </div>
             <p className="text-gray-600 mb-4">{store.description}</p>
-            <button className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-hover transition-colors">
+            <button className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:primary-hover transition-colors cursor-pointer">
               Go to Store
             </button>
           </div>

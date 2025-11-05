@@ -41,7 +41,7 @@ function Navbar() {
 
           <Link
             href="/purchases"
-            className="hover:bg-accent/10 flex items-center px-2"
+            className="hover:bg-accent/10 hidden md:flex items-center px-2"
           >
             Purchase History
           </Link>
@@ -65,7 +65,10 @@ function AdminLink() {
 
   if (!user || !canAccessAdminPages(user)) return null;
   return (
-    <Link href="/admin" className="hover:bg-accent/10 flex items-center px-2">
+    <Link
+      href="/admin"
+      className="hover:bg-accent/10 hidden md:flex items-center px-2"
+    >
       Admin
     </Link>
   );

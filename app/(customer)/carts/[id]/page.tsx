@@ -50,7 +50,7 @@ export default function CartPage({
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 divide-y">
         {cart.map((item) => (
-          <div key={item.itemId} className="p-6 flex items-center gap-4">
+          <div key={item.itemId} className="p-6 flex md:items-center gap-4">
             <Image
               src={item.image}
               alt={item.name}
@@ -58,53 +58,55 @@ export default function CartPage({
               width={64}
               height={64}
             />
-            <div className="flex-1">
-              <h3 className="font-semibold text-gray-900">{item.name}</h3>
-              <p className="text-primary font-medium">
-                R{item.price.toFixed(2)}
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() =>
-                  updateCartItemQuantity(
-                    id as Id<'stores'>,
-                    item.itemId,
-                    item.quantity - 1
-                  )
-                }
-                className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-medium"
-              >
-                -
-              </button>
-              <span className="w-8 text-center font-medium">
-                {item.quantity}
-              </span>
-              <button
-                onClick={() =>
-                  updateCartItemQuantity(
-                    id as Id<'stores'>,
-                    item.itemId,
-                    item.quantity + 1
-                  )
-                }
-                className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-medium"
-              >
-                +
-              </button>
-            </div>
-            <div className="text-right">
-              <p className="font-semibold text-gray-900">
-                R{(item.price * item.quantity).toFixed(2)}
-              </p>
-              <button
-                onClick={() =>
-                  updateCartItemQuantity(id as Id<'stores'>, item.itemId, 0)
-                }
-                className="text-red-500 hover:text-red-700 text-sm"
-              >
-                Remove
-              </button>
+            <div className="flex gap-4 flex-col md:flex-row flex-1">
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900">{item.name}</h3>
+                <p className="text-primary font-medium">
+                  R{item.price.toFixed(2)}
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() =>
+                    updateCartItemQuantity(
+                      id as Id<'stores'>,
+                      item.itemId,
+                      item.quantity - 1
+                    )
+                  }
+                  className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-medium"
+                >
+                  -
+                </button>
+                <span className="w-8 text-center font-medium">
+                  {item.quantity}
+                </span>
+                <button
+                  onClick={() =>
+                    updateCartItemQuantity(
+                      id as Id<'stores'>,
+                      item.itemId,
+                      item.quantity + 1
+                    )
+                  }
+                  className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-medium"
+                >
+                  +
+                </button>
+              </div>
+              <div className="md:text-right">
+                <p className="font-semibold text-gray-900">
+                  R{(item.price * item.quantity).toFixed(2)}
+                </p>
+                <button
+                  onClick={() =>
+                    updateCartItemQuantity(id as Id<'stores'>, item.itemId, 0)
+                  }
+                  className="text-red-500 hover:text-red-700 text-sm"
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           </div>
         ))}

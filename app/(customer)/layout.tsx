@@ -40,10 +40,10 @@ function Navbar() {
           <AdminLink />
 
           <Link
-            href="/purchases"
+            href="/orders"
             className="hover:bg-accent/10 hidden md:flex items-center px-2"
           >
-            Purchase History
+            Orders
           </Link>
           <CartButton />
           <div className="self-center p-0">

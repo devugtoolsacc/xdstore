@@ -22,7 +22,7 @@ const applicationTables = {
   }).index('by_store', ['storeId']),
 
   orders: defineTable({
-    customerId: v.optional(v.id('users')),
+    customerId: v.id('users'),
     customerName: v.string(),
     customerEmail: v.string(),
     customerPhone: v.string(),

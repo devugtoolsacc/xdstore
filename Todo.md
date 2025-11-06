@@ -1,4 +1,5 @@
 [x] setup auth
 [x] setup customer
-[] finish cart
-[] setup admin
+[x] finish cart
+[x] setup admin
+[] use react-hook-forms

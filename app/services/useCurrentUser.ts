@@ -13,6 +13,7 @@ export function useCurrentUser(allData = false) {
     isLoading: isLoading || (isAuthenticated && user === null),
     isAuthenticated: isAuthenticated && user !== null,
     user: {
+      id: session?.user.publicMetadata.dbId,
       externalId: session?.user.id,
       name: session?.user.fullName,
       email: session?.user.emailAddresses[0].emailAddress,

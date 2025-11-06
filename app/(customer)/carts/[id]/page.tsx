@@ -132,7 +132,7 @@ export default function CartPage({
           </div>
         </div>
         <Link
-          href={`/cart/${id}/checkout`}
+          href={`/carts/${id}/checkout`}
           className="block text-center w-full mt-6 bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-hover transition-colors"
         >
           Proceed to Checkout

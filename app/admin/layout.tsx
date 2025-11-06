@@ -11,15 +11,15 @@ export default function ConsumerLayout({
   return (
     <>
       <Navbar />
-      {children}
+      <main className="max-w-7xl mx-auto px-4 py-8">{children}</main>
     </>
   );
 }
 
 function Navbar() {
   return (
-    <header className="flex h-12 shadow bg-background z-10 justify-center">
-      <nav className="flex gap-4 container">
+    <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
+      <nav className="max-w-7xl mx-auto px-4 h-16 flex items-center gap-4">
         <div className="mr-auto flex items-center gap-2">
           <Link href="/" className="text-lg hover:underline">
             XD Store

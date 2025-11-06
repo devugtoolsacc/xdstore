@@ -3,3 +3,4 @@
 [x] finish cart
 [x] setup admin
 [] use react-hook-forms
+[] protect private routes

@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   const url = 'https://payments.yoco.com/api/checkouts';
+
+  const { amount, lineItems, cancelUrl, successUrl, failureUrl } =
+    await request.json();
   const options = {
     method: 'POST',
     headers: {
@@ -9,43 +12,12 @@ export async function POST(request: Request) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      amount: 500,
+      amount: amount * 100,
       currency: 'ZAR',
-      cancelUrl: 'https://57aa8859bdfc.ngrok-free.app/checkout/cancel',
-      successUrl: 'https://57aa8859bdfc.ngrok-free.app/checkout/success',
-      failureUrl: 'https://57aa8859bdfc.ngrok-free.app/checkout/failed',
-      lineItems: [
-        {
-          displayName: 'Premium Wireless Headphones',
-          quantity: 1,
-          pricingDetails: {
-            price: 12000,
-            taxAmount: null,
-            discountAmount: null,
-          },
-          description: null,
-        },
-        {
-          displayName: 'Protective Case',
-          quantity: 1,
-          pricingDetails: {
-            price: 3000,
-            taxAmount: null,
-            discountAmount: null,
-          },
-          description: null,
-        },
-        {
-          displayName: 'Express Shipping',
-          quantity: 1,
-          pricingDetails: {
-            price: 1000,
-            taxAmount: null,
-            discountAmount: null,
-          },
-          description: null,
-        },
-      ],
+      cancelUrl,
+      successUrl,
+      failureUrl,
+      lineItems,
     }),
   };
   try {

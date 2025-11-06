@@ -61,38 +61,59 @@ export default function CheckoutPage({
     setIsProcessing(true);
     setPaymentStatus('processing');
 
+    const baseUrl = window.location.origin;
+
     try {
-      // Simulate payment processing
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // create order
+      const orderId = await createOrder({
+        customerId: user?.id as Id<'users'>,
+        customerName: customerInfo.name,
+        customerEmail: customerInfo.email,
+        customerPhone: customerInfo.phone,
+        storeId: id as Id<'stores'>,
+        items: cart.map((item) => ({
+          itemId: item.itemId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+        subtotal,
+        deliveryFee,
+        total,
+        deliveryAddress: customerInfo.address,
+      });
 
-      // Randomly succeed or fail for demo purposes
-      const success = Math.random() > 0.2; // 80% success rate
+      setPaymentStatus('success');
+      clearCart(id as Id<'stores'>);
 
-      if (success) {
-        const orderId = await createOrder({
-          customerId: user?.id as Id<'users'>,
-          customerName: customerInfo.name,
-          customerEmail: customerInfo.email,
-          customerPhone: customerInfo.phone,
-          storeId: id as Id<'stores'>,
-          items: cart.map((item) => ({
-            itemId: item.itemId,
-            name: item.name,
-            price: item.price,
+      // make payment
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        body: JSON.stringify({
+          amount: total,
+          cancelUrl: `${baseUrl}/orders/${orderId}/cancel`,
+          successUrl: `${baseUrl}/orders/${orderId}`,
+          failureUrl: `${baseUrl}/orders/${orderId}/failed`,
+          lineItems: cart.map((item) => ({
+            displayName: item.name,
             quantity: item.quantity,
+            pricingDetails: {
+              price: item.price,
+              taxAmount: null,
+              discountAmount: null,
+            },
           })),
-          subtotal,
-          deliveryFee,
-          total,
-          deliveryAddress: customerInfo.address,
-        });
+        }),
+      });
+      const data = await response.json();
 
-        setPaymentStatus('success');
-        clearCart(id as Id<'stores'>);
-        router.push(`/orders/${orderId}`);
-      } else {
+      if (!response.ok) {
         setPaymentStatus('failed');
+        toast.error('Payment failed. Please try again.');
+        return;
       }
+
+      router.replace(data.redirectUrl);
     } catch (error) {
       console.error('Payment failed:', error);
       setPaymentStatus('failed');

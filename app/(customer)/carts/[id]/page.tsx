@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Id } from '@/convex/_generated/dataModel';
 import { use } from 'react';
+import { SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react';
+import { Button } from '@/components/ui/button';
 
 export default function CartPage({
   params,
@@ -131,12 +133,21 @@ export default function CartPage({
             <span className="text-primary">R{total.toFixed(2)}</span>
           </div>
         </div>
-        <Link
-          href={`/carts/${id}/checkout`}
-          className="block text-center w-full mt-6 bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-hover transition-colors"
-        >
-          Proceed to Checkout
-        </Link>
+        <SignedIn>
+          <Link
+            href={`/carts/${id}/checkout`}
+            className="block text-center w-full mt-6 bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-hover transition-colors"
+          >
+            Proceed to Checkout
+          </Link>
+        </SignedIn>
+        <SignedOut>
+          <SignInButton>
+            <Button className="block text-center w-full mt-6 bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-hover transition-colors">
+              Sign In to checkout
+            </Button>
+          </SignInButton>
+        </SignedOut>
       </div>
     </div>
   );

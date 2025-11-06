@@ -1,6 +1,6 @@
 import { Id } from '@/convex/_generated/dataModel';
 import { CartItem } from '@/features/users/schemas/customer/cart/components/types/cart';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState, useEffectEvent } from 'react';
 import { createContext } from 'react';
 
 export const CartContext = createContext<{
@@ -37,10 +37,22 @@ export default function CartProvider({
 }) {
   const [carts, setCarts] = useState<Record<Id<'stores'>, CartItem[]>>({});
 
+  const setCartsEffect = useEffectEvent(() => {
+    const storedCarts = localStorage.getItem('carts');
+    if (storedCarts) {
+      const parsedCarts = JSON.parse(storedCarts);
+      setCarts((prev) => ({ ...prev, ...parsedCarts }));
+    }
+  });
+
+  useEffect(() => {
+    setCartsEffect();
+  }, []);
+
   const addToCart = (storeId: Id<'stores'>, item: CartItem) => {
     setCarts((prev) => {
       const existing = prev[storeId]?.find((i) => i.itemId === item.itemId);
-      return {
+      const newCarts = {
         ...prev,
         [storeId]: existing
           ? [
@@ -52,16 +64,20 @@ export default function CartProvider({
             ]
           : [...(prev[storeId] || []), item],
       };
+      localStorage.setItem('carts', JSON.stringify(newCarts));
+      return newCarts;
     });
   };
 
   const removeFromCart = (storeId: Id<'stores'>, itemId: Id<'items'>) => {
     setCarts((prev) => {
-      return {
+      const newCarts = {
         ...prev,
         [storeId]:
           prev[storeId]?.filter((item) => item.itemId !== itemId) || [],
       };
+      localStorage.setItem('carts', JSON.stringify(newCarts));
+      return newCarts;
     });
   };
 
@@ -69,6 +85,7 @@ export default function CartProvider({
     setCarts((prev) => {
       const newCarts = { ...prev };
       delete newCarts[storeId];
+      localStorage.setItem('carts', JSON.stringify(newCarts));
       return newCarts;
     });
   };
@@ -80,21 +97,25 @@ export default function CartProvider({
   ) => {
     if (quantity <= 0) {
       setCarts((prev) => {
-        return {
+        const newCarts = {
           ...prev,
           [storeId]:
             prev[storeId]?.filter((item) => item.itemId !== itemId) || [],
         };
+        localStorage.setItem('carts', JSON.stringify(newCarts));
+        return newCarts;
       });
     } else {
       setCarts((prev) => {
-        return {
+        const newCarts = {
           ...prev,
           [storeId]:
             prev[storeId]?.map((item) =>
               item.itemId === itemId ? { ...item, quantity } : item
             ) || [],
         };
+        localStorage.setItem('carts', JSON.stringify(newCarts));
+        return newCarts;
       });
     }
   };

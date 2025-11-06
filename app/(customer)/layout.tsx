@@ -45,7 +45,9 @@ function Navbar() {
           >
             Orders
           </Link>
-          <CartButton />
+        </SignedIn>
+        <CartButton />
+        <SignedIn>
           <div className="self-center p-0">
             <UserButton />
           </div>

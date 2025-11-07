@@ -7,7 +7,7 @@
 [x] clear cart from previous store, if user orders from different store
 [x] fix calc bug on checkout page
 
-[] protect private routes (authorization)
+[x] protect private routes (authorization)
 
 [] fix adding new item
 [] customizations (check them out)

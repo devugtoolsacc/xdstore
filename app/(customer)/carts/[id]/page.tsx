@@ -7,6 +7,7 @@ import { Id } from '@/convex/_generated/dataModel';
 import { use } from 'react';
 import { SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react';
 import { Button } from '@/components/ui/button';
+import NavButton from '@/app/components/NavButton';
 
 export default function CartPage({
   params,
@@ -28,12 +29,7 @@ export default function CartPage({
       <div className="text-center py-20">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">Your Cart</h1>
         <p className="text-gray-500 text-lg mb-8">Your cart is empty</p>
-        <Link
-          href={`/store/${id}`}
-          className="text-primary hover:text-primary-hover font-medium"
-        >
-          Continue Shopping
-        </Link>
+        <NavButton href={`/store/${id}`}>← Back to Store</NavButton>
       </div>
     );
   }
@@ -42,12 +38,7 @@ export default function CartPage({
     <div className="max-w-2xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Your Cart</h1>
-        <Link
-          href="/"
-          className="text-primary hover:text-primary-hover font-medium"
-        >
-          ← Continue Shopping
-        </Link>
+        <NavButton href={`/store/${id}`}>← Back to Store</NavButton>
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 divide-y">

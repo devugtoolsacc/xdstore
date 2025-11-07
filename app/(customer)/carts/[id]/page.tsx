@@ -143,7 +143,7 @@ export default function CartPage({
         </SignedIn>
         <SignedOut>
           <SignInButton>
-            <Button className="block text-center w-full mt-6 bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-hover transition-colors">
+            <Button className="block text-center w-full mt-6 bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-hover transition-colors h-[unset] text-md">
               Sign In to checkout
             </Button>
           </SignInButton>

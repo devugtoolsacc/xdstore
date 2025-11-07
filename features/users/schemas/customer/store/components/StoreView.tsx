@@ -7,6 +7,7 @@ import NavButton from '@/app/components/NavButton';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { useCart } from '@/app/providers/CartProvider';
+import { toast } from 'sonner';
 
 export default function StoreView(props: {
   preloadedStore: Preloaded<typeof api.stores.get>;
@@ -15,7 +16,7 @@ export default function StoreView(props: {
   const store = usePreloadedQuery(props.preloadedStore);
   const items = usePreloadedQuery(props.preloadedItems);
 
-  const { addToCart } = useCart();
+  const { addToCart, getCart, clearAllCarts, isCartsEmpty } = useCart();
 
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
@@ -102,15 +103,23 @@ export default function StoreView(props: {
                   R{item.price.toFixed(2)}
                 </span>
                 <button
-                  onClick={() =>
+                  onClick={() => {
+                    const cart = getCart(store._id);
+
+                    if (!cart && !isCartsEmpty()) {
+                      //warn user that previous will be cleared
+                      toast.warning('Previous store cart was cleared');
+                      clearAllCarts();
+                    }
+
                     addToCart(store._id, {
                       itemId: item._id,
                       name: item.name,
                       price: item.price,
                       quantity: 1,
                       image: item.image,
-                    })
-                  }
+                    });
+                  }}
                   disabled={!item.isAvailable}
                   className="cursor-pointer bg-primary text-white px-4 py-2 rounded-lg font-medium hover:primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >

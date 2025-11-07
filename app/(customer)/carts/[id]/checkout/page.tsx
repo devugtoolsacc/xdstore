@@ -40,6 +40,17 @@ export default function CheckoutPage({
   };
 
   const cart = getCart(id as Id<'stores'>);
+
+  if (!cart) {
+    return (
+      <div className="text-center py-20">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Your Cart</h1>
+        <p className="text-gray-500 text-lg mb-8">Your cart is empty</p>
+        <NavButton href={`/store/${id}`}>← Continue Shopping</NavButton>
+      </div>
+    );
+  }
+
   const subtotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0

@@ -16,14 +16,14 @@ export default function CartPage({
   const { id } = use(params);
   const { getCart, updateCartItemQuantity } = useCart();
   const cart = getCart(id as Id<'stores'>);
-  const subtotal = cart.reduce(
+  const subtotal = cart?.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
   const deliveryFee = 25; // Fixed delivery fee
-  const total = subtotal + deliveryFee;
+  const total = subtotal ? subtotal + deliveryFee : 0;
 
-  if (cart.length === 0) {
+  if (!cart || cart.length === 0) {
     return (
       <div className="text-center py-20">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">Your Cart</h1>
@@ -122,7 +122,7 @@ export default function CartPage({
         <div className="space-y-2">
           <div className="flex justify-between">
             <span className="text-gray-600">Subtotal</span>
-            <span className="font-medium">R{subtotal.toFixed(2)}</span>
+            <span className="font-medium">R{subtotal?.toFixed(2) || 0}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Delivery Fee</span>

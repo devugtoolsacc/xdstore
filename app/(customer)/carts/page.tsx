@@ -46,11 +46,11 @@ export default function CartsPage() {
                   <p className="text-lg font-bold">{store.name}</p>
                   <p>
                     Subtotal:{' R'}
-                    {cart.reduce((acc, item) => {
+                    {cart?.reduce((acc, item) => {
                       return acc + item.price * item.quantity;
                     }, 0)}
                   </p>
-                  <p>Items: {cart.length}</p>
+                  <p>Items: {cart?.length}</p>
                 </div>
               </div>
             </Link>

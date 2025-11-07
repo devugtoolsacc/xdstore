@@ -18,3 +18,5 @@
 [] notification??
 
 [] use react-hook-forms (validations)
+
+[] fix order and payment flow (add paid field and only allow paid orders to get to restaurant)

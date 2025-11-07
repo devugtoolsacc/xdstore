@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useRef, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { Doc, Id } from '@/convex/_generated/dataModel';
@@ -9,6 +9,7 @@ import NavButton from '@/app/components/NavButton';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { toast } from 'sonner';
+import { useSound } from 'use-sound';
 
 export default function StorePage({
   params,
@@ -30,6 +31,31 @@ export default function StorePage({
   const [activeTab, setActiveTab] = useState<'orders' | 'items'>('orders');
   const [showItemModal, setShowItemModal] = useState(false);
   const [editingItem, setEditingItem] = useState<Doc<'items'> | null>(null);
+
+  // Sound: play when a NEW order arrives for the selected store
+  const [playNewOrder] = useSound('/sounds/notification-1.wav', {
+    volume: 0.5,
+  });
+  const prevOrderIdsRef = useRef<Set<string> | null>(null);
+
+  useEffect(() => {
+    if (!orders) return;
+    const currentIds = new Set(orders.map((o) => o._id));
+    const prev = prevOrderIdsRef.current;
+    if (prev) {
+      let hasNew = false;
+      for (const id of currentIds) {
+        if (!prev.has(id)) {
+          hasNew = true;
+          break;
+        }
+      }
+      if (hasNew) {
+        playNewOrder();
+      }
+    }
+    prevOrderIdsRef.current = currentIds;
+  }, [orders, playNewOrder]);
 
   if (
     store === undefined ||

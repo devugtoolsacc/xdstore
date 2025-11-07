@@ -1,9 +1,10 @@
 'use client';
 import { useQuery } from 'convex/react';
-import { use } from 'react';
+import { use, useEffect, useRef } from 'react';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import NavButton from '@/app/components/NavButton';
+import { useSound } from 'use-sound';
 
 const statusSteps = [
   {
@@ -40,6 +41,22 @@ export default function OrderPage({
 }) {
   const { id } = use(params);
   const order = useQuery(api.orders.get, { orderId: id });
+
+  const prevStatusRef = useRef<string | null>(null);
+  const [playStatusChange] = useSound('/sounds/notification-1.wav', {
+    volume: 0.5,
+  });
+
+  useEffect(() => {
+    console.log('order', order);
+
+    if (order === undefined || !order) return;
+    const prev = prevStatusRef.current;
+    if (prev && prev !== order.status) {
+      playStatusChange();
+    }
+    prevStatusRef.current = order.status;
+  }, [order, order?.status, playStatusChange]);
 
   if (order === undefined) {
     return (

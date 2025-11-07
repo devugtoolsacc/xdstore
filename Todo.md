@@ -3,13 +3,16 @@
 [x] finish cart
 [x] setup admin
 
-[] fix login flow (save cart on localhost)
-[] clear cart from previous store, if user orders from different store
+[x] fix login flow (save cart on localhost)
+[x] clear cart from previous store, if user orders from different store
+[x] fix calc bug on checkout page
 
 [] protect private routes (authorization)
 
 [] fix adding new item
 [] customizations (check them out)
+
+[] fix order and payment flow (add paid field and only allow paid orders to get to restaurant)
 
 [] create a order view for the admin
 
@@ -19,4 +22,8 @@
 
 [] use react-hook-forms (validations)
 
-[] fix order and payment flow (add paid field and only allow paid orders to get to restaurant)
+[] separate delivery fee, card payment fee and order price
+
+[] don't allow admins to order
+
+[] move to centralized accout clerk account

@@ -1,6 +1,12 @@
-import { NextResponse } from 'next/server';
+import { getAuth } from '@clerk/nextjs/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const { isAuthenticated } = await getAuth(request);
+  if (!isAuthenticated) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const url = 'https://payments.yoco.com/api/checkouts';
 
   const { amount, lineItems, cancelUrl, successUrl, failureUrl } =

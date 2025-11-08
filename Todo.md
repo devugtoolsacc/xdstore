@@ -9,6 +9,15 @@
 
 [x] protect private routes (authorization)
 
+[] fix role based auth for restaurants
+
+- create store_memberships tbl
+- create session webhook to sync the roles
+
+[] redirect admins to respective dashboards
+
+- use store memebrships to redirect the user
+
 [] fix adding new item
 [] customizations (check them out)
 

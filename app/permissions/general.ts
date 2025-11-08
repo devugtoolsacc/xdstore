@@ -1,5 +1,9 @@
 import { UserRole } from '@/features/users/schemas/userSchema';
 
-export function canAccessAdminPages({ role }: { role: UserRole | undefined }) {
-  return role === 'admin';
+export function canAccessAdminPages({
+  roles,
+}: {
+  roles: UserRole[] | undefined;
+}) {
+  return roles?.includes('admin');
 }

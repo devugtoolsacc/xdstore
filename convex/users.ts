@@ -19,16 +19,16 @@ export const upsertFromClerk = internalMutation({
     name: v.string(),
     email: v.string(),
     imageUrl: v.string(),
-    role: v.union(v.literal('admin'), v.literal('user')),
+    roles: v.array(v.union(v.literal('admin'), v.literal('user'))),
   },
 
-  async handler(ctx, { externalId, name, email, imageUrl, role }) {
+  async handler(ctx, { externalId, name, email, imageUrl, roles }) {
     const userAttributes = {
       name: name,
       externalId: externalId,
       email: email,
       imageUrl: imageUrl,
-      role: role,
+      roles,
     };
 
     const user = await userByExternalId(ctx, externalId);

@@ -1,15 +1,26 @@
-import { UserRole } from '@/drizzle/schema/user';
+import { UserRole } from '@/features/users/schemas/userSchema';
+import { StoreMembershipRole } from '@/features/users/schemas/userSchema';
 
 export {};
 
 declare global {
   interface CustomJwtSessionClaims {
     dbId?: string;
-    role?: UserRole;
+    roles: UserRole[];
+    storeMemberships?: {
+      externalId: string;
+      storeId: string;
+      roles: StoreMembershipRole[];
+    }[];
   }
 
   interface UserPublicMetadata {
     dbId?: string;
-    role?: UserRole;
+    roles: UserRole[];
+    storeMemberships?: {
+      externalId: string;
+      storeId: string;
+      roles: StoreMembershipRole[];
+    }[];
   }
 }

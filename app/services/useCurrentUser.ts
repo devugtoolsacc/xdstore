@@ -18,7 +18,8 @@ export function useCurrentUser(allData = false) {
       name: session?.user.fullName,
       email: session?.user.emailAddresses[0].emailAddress,
       imageUrl: session?.user.imageUrl,
-      role: session?.user.publicMetadata.role,
+      roles: session?.user.publicMetadata.roles,
+      storeMemberships: session?.user.publicMetadata.storeMemberships,
       user,
     },
   };

@@ -57,9 +57,19 @@ const applicationTables = {
     name: v.string(),
     email: v.string(),
     imageUrl: v.string(),
-    role: v.union(v.literal('admin'), v.literal('user')),
+    roles: v.array(
+      v.union(v.literal('admin'), v.literal('user'), v.literal('store_admin'))
+    ),
     deletedAt: v.optional(v.number()),
   }).index('byExternalId', ['externalId']),
+  storeMemberships: defineTable({
+    userId: v.id('users'),
+    externalId: v.string(),
+    storeId: v.id('stores'),
+    role: v.union(v.literal('admin')),
+  })
+    .index('byExternalId', ['externalId'])
+    .index('byStoreId', ['storeId']),
 };
 
 export default defineSchema({

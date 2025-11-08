@@ -1,5 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { notFound } from 'next/navigation';
+import { canAccessAdminPages } from './app/permissions/general';
 
 const isPublicRoute = createRouteMatcher([
   '/',
@@ -15,7 +16,7 @@ const isAdminRoute = createRouteMatcher(['/admin(.*)']);
 export default clerkMiddleware(async (auth, req) => {
   if (isAdminRoute(req)) {
     const user = await auth.protect();
-    if (user.sessionClaims.role !== 'admin') {
+    if (!canAccessAdminPages({ roles: user.sessionClaims.roles })) {
       return notFound();
     }
   }

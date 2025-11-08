@@ -37,7 +37,7 @@ http.route({
               name,
               email: email.email_address,
               imageUrl: event.data.image_url,
-              role: 'user',
+              roles: ['user'],
             });
 
             const user = await ctx.runQuery(
@@ -53,7 +53,7 @@ http.route({
             await client.users.updateUserMetadata(user.externalId, {
               publicMetadata: {
                 dbId: user._id,
-                role: user.role,
+                roles: user.roles,
               },
             });
             return new Response(`User created ${user._id}`, { status: 200 });
@@ -65,7 +65,7 @@ http.route({
               name,
               email: email.email_address,
               imageUrl: event.data.image_url,
-              role: event.data.public_metadata.role,
+              roles: event.data.public_metadata.roles,
             });
             return new Response(`User updated ${event.data.id}`, {
               status: 200,

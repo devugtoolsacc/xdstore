@@ -8,7 +8,10 @@ import {
 } from '@clerk/clerk-react';
 import Link from 'next/link';
 import { useCurrentUser } from '../services/useCurrentUser';
-import { canAccessAdminPages } from '../permissions/general';
+import {
+  canAccessAdminPages,
+  canAccessStoreAdminPages,
+} from '../permissions/general';
 import CartButton from '@/features/users/schemas/customer/cart/components/CartButton';
 import CartProvider from '../providers/CartProvider';
 
@@ -65,7 +68,17 @@ function Navbar() {
 function AdminLink() {
   const { user } = useCurrentUser();
 
-  if (!user || !canAccessAdminPages(user)) return null;
+  if (
+    !user ||
+    !(
+      canAccessAdminPages({ roles: user.roles }) ||
+      canAccessStoreAdminPages({
+        roles: user.roles,
+        storeMemberships: user.storeMemberships,
+      })
+    )
+  )
+    return null;
   return (
     <Link
       href="/admin"

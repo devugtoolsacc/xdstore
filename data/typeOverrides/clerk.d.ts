@@ -8,7 +8,6 @@ declare global {
     dbId?: string;
     roles: UserRole[];
     storeMemberships?: {
-      externalId: string;
       storeId: string;
       roles: StoreMembershipRole[];
     }[];
@@ -18,7 +17,6 @@ declare global {
     dbId?: string;
     roles: UserRole[];
     storeMemberships?: {
-      externalId: string;
       storeId: string;
       roles: StoreMembershipRole[];
     }[];

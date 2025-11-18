@@ -3,12 +3,48 @@ import { httpAction } from './_generated/server';
 import { internal } from './_generated/api';
 import { createClerkClient, type WebhookEvent } from '@clerk/backend';
 import { Webhook } from 'svix';
+import { ActionCtx } from './_generated/server';
 
 const http = httpRouter();
 
 const client = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY!,
 });
+
+export async function syncClerkUserPermissions(
+  ctx: ActionCtx,
+  externalId: string
+) {
+  const user = await ctx.runQuery(internal.users.getUserByExternalId, {
+    externalId,
+  });
+
+  if (!user) return new Response('User not found', { status: 400 });
+
+  const storeMemberships = await ctx.runQuery(
+    internal.storeMemberships.getStoreMembershipsByUserId,
+    {
+      userId: user._id,
+    }
+  );
+
+  const storeMembershipsWithRoles = storeMemberships.map((membership) => ({
+    storeId: membership.storeId,
+    roles: membership.roles,
+  }));
+
+  await client.users.updateUserMetadata(user.externalId, {
+    publicMetadata: {
+      storeMemberships: storeMembershipsWithRoles,
+      roles: user.roles,
+      dbId: user._id,
+    },
+  });
+
+  return new Response('Session created and user metadata updated', {
+    status: 200,
+  });
+}
 
 http.route({
   path: '/clerk-users-webhook',
@@ -79,6 +115,8 @@ http.route({
             clerkUserId: event.data.id,
           });
           return new Response('User deleted', { status: 200 });
+        case 'session.created':
+          await syncClerkUserPermissions(ctx, event.data.user_id);
         default:
           return new Response(null, { status: 200 });
       }

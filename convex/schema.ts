@@ -64,11 +64,10 @@ const applicationTables = {
   }).index('byExternalId', ['externalId']),
   storeMemberships: defineTable({
     userId: v.id('users'),
-    externalId: v.string(),
     storeId: v.id('stores'),
-    role: v.union(v.literal('admin')),
+    roles: v.array(v.union(v.literal('admin'))),
   })
-    .index('byExternalId', ['externalId'])
+    .index('byUserId', ['userId'])
     .index('byStoreId', ['storeId']),
 };
 

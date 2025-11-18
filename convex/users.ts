@@ -1,10 +1,12 @@
 import {
   internalMutation,
   internalQuery,
+  action,
   query,
   QueryCtx,
 } from './_generated/server';
 import { v } from 'convex/values';
+import { syncClerkUserPermissions } from './http';
 
 export const current = query({
   args: {},
@@ -19,7 +21,9 @@ export const upsertFromClerk = internalMutation({
     name: v.string(),
     email: v.string(),
     imageUrl: v.string(),
-    roles: v.array(v.union(v.literal('admin'), v.literal('user'))),
+    roles: v.array(
+      v.union(v.literal('admin'), v.literal('user'), v.literal('store_admin'))
+    ),
   },
 
   async handler(ctx, { externalId, name, email, imageUrl, roles }) {
@@ -48,6 +52,7 @@ export const deleteFromClerk = internalMutation({
     if (user !== null) {
       await ctx.db.patch(user._id, {
         deletedAt: new Date().getTime(),
+        externalId: 'deleted',
         email: 'redacted@deleted.com',
         name: 'Deleted User',
         imageUrl: undefined,
@@ -88,6 +93,12 @@ export const getUserByExternalId = internalQuery({
   },
 });
 
+export const syncClerkUserPermissionsAction = action({
+  args: { externalId: v.string() },
+  handler: async (ctx, { externalId }) => {
+    await syncClerkUserPermissions(ctx, externalId);
+  },
+});
 async function userByExternalId(ctx: QueryCtx, externalId: string) {
   return await ctx.db
     .query('users')

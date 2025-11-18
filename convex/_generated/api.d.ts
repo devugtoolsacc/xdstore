@@ -13,6 +13,7 @@ import type * as http from "../http.js";
 import type * as mockData from "../mockData.js";
 import type * as orders from "../orders.js";
 import type * as router from "../router.js";
+import type * as storeMemberships from "../storeMemberships.js";
 import type * as stores from "../stores.js";
 import type * as users from "../users.js";
 
@@ -36,6 +37,7 @@ declare const fullApi: ApiFromModules<{
   mockData: typeof mockData;
   orders: typeof orders;
   router: typeof router;
+  storeMemberships: typeof storeMemberships;
   stores: typeof stores;
   users: typeof users;
 }>;

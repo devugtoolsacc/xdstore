@@ -9,11 +9,12 @@ export async function POST(request: NextRequest) {
 
   const url = 'https://payments.yoco.com/api/checkouts';
 
-  const { amount, lineItems, cancelUrl, successUrl, failureUrl } =
+  const { orderId, amount, lineItems, cancelUrl, successUrl, failureUrl } =
     await request.json();
   const options = {
     method: 'POST',
     headers: {
+      'Idempotency-Key': orderId,
       Authorization: `Bearer ${process.env.YOCO_API_KEY}`,
       'Content-Type': 'application/json',
     },
@@ -29,8 +30,6 @@ export async function POST(request: NextRequest) {
   try {
     const response = await fetch(url, options);
     const data = await response.json();
-
-    console.log(data);
 
     return NextResponse.json(data);
   } catch (error) {

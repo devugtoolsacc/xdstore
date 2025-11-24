@@ -51,7 +51,7 @@ http.route({
   method: 'POST',
   handler: httpAction(async (ctx, request) => {
     try {
-      const event = await validateRequest(request);
+      const event = await validateClerkWebhookRequest(request);
       if (!event) {
         return new Response('Error verifying webhook', { status: 400 });
       }
@@ -127,7 +127,15 @@ http.route({
   }),
 });
 
-async function validateRequest(req: Request): Promise<WebhookEvent | null> {
+// http.route({
+//   path: '/yoco-webhook',
+//   method: 'POST',
+//   handler: validateYocoWebhookRequestAction,
+// });
+
+async function validateClerkWebhookRequest(
+  req: Request
+): Promise<WebhookEvent | null> {
   const payloadString = await req.text();
   const svixHeaders = {
     'svix-id': req.headers.get('svix-id')!,

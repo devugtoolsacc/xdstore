@@ -8,6 +8,8 @@ export const env = createEnv({
     TEST_IP_ADDRESS: z.string().min(1).optional(),
     CLERK_JWT_ISSUER_DOMAIN: z.string().min(1),
     CONVEX_DEPLOYMENT: z.string().min(1),
+    YOCO_WEBHOOK_SECRET: z.string().min(1),
+    CONVEX_URL: z.string().url(),
   },
   runtimeEnv: {
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
@@ -15,5 +17,7 @@ export const env = createEnv({
     TEST_IP_ADDRESS: process.env.TEST_IP_ADDRESS,
     CLERK_JWT_ISSUER_DOMAIN: process.env.CLERK_JWT_ISSUER_DOMAIN,
     CONVEX_DEPLOYMENT: process.env.CONVEX_DEPLOYMENT,
+    YOCO_WEBHOOK_SECRET: process.env.YOCO_WEBHOOK_SECRET,
+    CONVEX_URL: process.env.CONVEX_URL,
   },
 });

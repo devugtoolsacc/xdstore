@@ -8,6 +8,7 @@ export const create = mutation({
     customerEmail: v.string(),
     customerPhone: v.string(),
     storeId: v.id('stores'),
+    checkoutId: v.optional(v.string()),
     items: v.array(
       v.object({
         itemId: v.id('items'),
@@ -26,7 +27,7 @@ export const create = mutation({
 
     return await ctx.db.insert('orders', {
       ...args,
-      status: 'pending',
+      status: 'created',
       estimatedDeliveryTime,
     });
   },
@@ -71,6 +72,7 @@ export const getByStore = query({
       .query('orders')
       .withIndex('by_store', (q) => q.eq('storeId', args.storeId))
       .order('desc')
+      .filter((q) => q.neq(q.field('status'), 'created'))
       .collect();
   },
 });
@@ -94,12 +96,33 @@ export const updateStatus = mutation({
   },
 });
 
+export const updateCheckoutId = mutation({
+  args: {
+    orderId: v.id('orders'),
+    checkoutId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.orderId, { checkoutId: args.checkoutId });
+  },
+});
+
+export const getOrderByCheckoutId = query({
+  args: { checkoutId: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query('orders')
+      .withIndex('by_checkoutId', (q) => q.eq('checkoutId', args.checkoutId))
+      .first();
+  },
+});
+
 export const getStats = query({
   args: { storeId: v.id('stores') },
   handler: async (ctx, args) => {
     const orders = await ctx.db
       .query('orders')
       .withIndex('by_store', (q) => q.eq('storeId', args.storeId))
+      .filter((q) => q.neq(q.field('status'), 'created'))
       .collect();
 
     const items = await ctx.db

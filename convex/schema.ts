@@ -38,10 +38,13 @@ const applicationTables = {
     subtotal: v.number(),
     deliveryFee: v.number(),
     total: v.number(),
+    checkoutId: v.optional(v.string()),
     status: v.union(
+      v.literal('created'),
       v.literal('pending'),
       v.literal('confirmed'),
       v.literal('preparing'),
+      v.literal('ready_for_pickup'),
       v.literal('out_for_delivery'),
       v.literal('delivered'),
       v.literal('cancelled')
@@ -51,7 +54,8 @@ const applicationTables = {
   })
     .index('by_store', ['storeId'])
     .index('by_customer', ['customerId'])
-    .index('by_status', ['status']),
+    .index('by_status', ['status'])
+    .index('by_checkoutId', ['checkoutId']),
   users: defineTable({
     externalId: v.string(),
     name: v.string(),

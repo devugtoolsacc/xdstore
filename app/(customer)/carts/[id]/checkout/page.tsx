@@ -34,6 +34,7 @@ export default function CheckoutPage({
   });
 
   const createOrder = useMutation(api.orders.create);
+  const updateCheckoutId = useMutation(api.orders.updateCheckoutId);
 
   const handleInputChange = (field: string, value: string) => {
     setCustomerInfo((prev) => ({ ...prev, [field]: value }));
@@ -101,6 +102,7 @@ export default function CheckoutPage({
       const response = await fetch('/api/checkout', {
         method: 'POST',
         body: JSON.stringify({
+          orderId,
           amount: total,
           cancelUrl: `${baseUrl}/orders/${orderId}/cancel`,
           successUrl: `${baseUrl}/orders/${orderId}`,
@@ -123,6 +125,11 @@ export default function CheckoutPage({
         toast.error('Payment failed. Please try again.');
         return;
       }
+
+      await updateCheckoutId({
+        orderId,
+        checkoutId: data.id,
+      });
 
       router.replace(data.redirectUrl);
     } catch (error) {

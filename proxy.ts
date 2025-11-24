@@ -13,6 +13,7 @@ const isPublicRoute = createRouteMatcher([
   '/api(.*)',
   '/carts/:id',
   '/store/:id',
+  '/api/webhooks/yoco(.*)',
 ]);
 
 const isStoreAdminRoute = createRouteMatcher(['/admin/store/:id(.*)']);

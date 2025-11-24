@@ -9,19 +9,18 @@
 
 [x] protect private routes (authorization)
 
-[] fix role based auth for restaurants
+[x] fix role based auth for restaurants
 
-- create store_memberships tbl
-- create session webhook to sync the roles
+[x] redirect admins to respective dashboards
 
-[] redirect admins to respective dashboards
+[] fix order and payment flow (add paid field and only allow paid orders to get to restaurant)
 
-- use store memebrships to redirect the user
+[] deploy to prod (setup certificates, prod db, webhooks, clerk e.t.c)
+
+[] use correct yoco account
 
 [] fix adding new item
 [] customizations (check them out)
-
-[] fix order and payment flow (add paid field and only allow paid orders to get to restaurant)
 
 [] create a order view for the admin
 
@@ -36,3 +35,5 @@
 [] don't allow admins to order
 
 [] move to centralized accout clerk account
+
+[] architectural flow diagrams. The process is not intuitive at all!
